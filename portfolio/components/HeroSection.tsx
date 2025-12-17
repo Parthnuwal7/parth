@@ -11,10 +11,11 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
   
   // Ensure URLs have proper protocol
   const formatUrl = (url: string) => {
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      return `https://${url}`;
+    const cleanUrl = url.trim();
+    if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+      return `https://${cleanUrl}`;
     }
-    return url;
+    return cleanUrl;
   };
 
   return (
