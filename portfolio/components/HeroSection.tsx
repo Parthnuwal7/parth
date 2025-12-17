@@ -6,13 +6,13 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps) {
-  const githubLink = socialLinks.find(link => link.name.toLowerCase() === 'github')?.url || 'https://github.com';
-  const linkedinLink = socialLinks.find(link => link.name.toLowerCase() === 'linkedin')?.url || 'https://linkedin.com';
+  const github = socialLinks.find(link => link.name.toLowerCase() === 'github');
+  const linkedin = socialLinks.find(link => link.name.toLowerCase() === 'linkedin');
   
   // Ensure URLs have proper protocol
   const formatUrl = (url: string) => {
     const cleanUrl = url.trim();
-    if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+    if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://') && !cleanUrl.startsWith('mailto:')) {
       return `https://${cleanUrl}`;
     }
     return cleanUrl;
@@ -72,24 +72,28 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
               >
                 Download Resume
               </a>
-              <a
-                href={formatUrl(githubLink)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass-card px-4 py-3 font-medium hover:bg-foreground hover:text-background transition-all flex items-center gap-2"
-              >
-                <Image src="/github-dark.png" alt="GitHub" width={20} height={20} />
-                GitHub
-              </a>
-              <a
-                href={formatUrl(linkedinLink)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass-card px-4 py-3 font-medium hover:bg-foreground hover:text-background transition-all flex items-center gap-2"
-              >
-                <Image src="/linkedin.png" alt="LinkedIn" width={20} height={20} />
-                LinkedIn
-              </a>
+              {github && (
+                <a
+                  href={formatUrl(github.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-card px-4 py-3 font-medium hover:bg-foreground hover:text-background transition-all flex items-center gap-2"
+                >
+                  {github.icon && <Image src={`/${github.icon}`} alt="GitHub" width={20} height={20} />}
+                  GitHub
+                </a>
+              )}
+              {linkedin && (
+                <a
+                  href={formatUrl(linkedin.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-card px-4 py-3 font-medium hover:bg-foreground hover:text-background transition-all flex items-center gap-2"
+                >
+                  {linkedin.icon && <Image src={`/${linkedin.icon}`} alt="LinkedIn" width={20} height={20} />}
+                  LinkedIn
+                </a>
+              )}
             </div>
           </div>
         </div>
