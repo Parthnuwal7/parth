@@ -15,10 +15,15 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left - Photo */}
           <div className="flex justify-center">
-            <div className="glass-card p-8 w-80 h-80 flex items-center justify-center">
-              <div className="w-full h-full bg-accent/10 rounded-lg flex items-center justify-center">
-                <span className="text-6xl">👤</span>
-              </div>
+            <div className="glass-card p-0 w-100 h-100 flex items-center justify-center overflow-hidden">
+              <Image
+                src="/hero.jpg"
+                alt={siteCopy.name || 'Profile Photo'}
+                width={400}
+                height={400}
+                className="w-full h-full object-cover rounded-lg"
+                priority
+              />
             </div>
           </div>
 

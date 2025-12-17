@@ -7,23 +7,22 @@ export default function ExperienceSection() {
         <div className="glass-card p-6">
           <div className="flex justify-between items-start mb-3">
             <div>
-              <h4 className="text-xl font-semibold">Backend Engineer</h4>
-              <p className="text-accent">Company Name</p>
+              <h4 className="text-xl font-semibold">Business Intelligence Intern</h4>
+              <p className="text-accent">Aspire FinTech Technologies Pvt Ltd, SG</p>
             </div>
-            <span className="text-sm text-accent">2023 - Present</span>
+            <span className="text-sm text-accent">Aug, 24 - May, 25</span>
           </div>
           <ul className="space-y-2">
-            <li className="flex items-start gap-2">
+            <li className="flex items-start gap-1">
               <span className="text-accent mt-1">•</span>
-              <span>Built scalable APIs serving millions of requests</span>
+              <span>Collaborated with growth team to analyze business data and generate actionable insights on referral campaigns</span>
             </li>
-            <li className="flex items-start gap-2">
+            <li className="flex items-start gap-1">
               <span className="text-accent mt-1">•</span>
-              <span>Implemented RAG systems with measurable accuracy improvements</span>
+              <span>Helped design and implement data visualization dashboards to track key performance metrics</span>
             </li>
           </ul>
         </div>
-        
         {/* Add more experience items as needed */}
       </div>
     </div>
