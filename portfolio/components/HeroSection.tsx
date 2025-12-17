@@ -6,8 +6,16 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps) {
-  const githubLink = socialLinks.find(link => link.name.toLowerCase() === 'github')?.url || '#';
-  const linkedinLink = socialLinks.find(link => link.name.toLowerCase() === 'linkedin')?.url || '#';
+  const githubLink = socialLinks.find(link => link.name.toLowerCase() === 'github')?.url || 'https://github.com';
+  const linkedinLink = socialLinks.find(link => link.name.toLowerCase() === 'linkedin')?.url || 'https://linkedin.com';
+  
+  // Ensure URLs have proper protocol
+  const formatUrl = (url: string) => {
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return `https://${url}`;
+    }
+    return url;
+  };
 
   return (
     <section id="home" className="flex items-start justify-center px-6 pt-8 pb-20">
@@ -64,19 +72,21 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
                 Download Resume
               </a>
               <a
-                href={githubLink}
+                href={formatUrl(githubLink)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glass-card px-6 py-3 font-medium hover:bg-foreground hover:text-background transition-all"
+                className="glass-card px-4 py-3 font-medium hover:bg-foreground hover:text-background transition-all flex items-center gap-2"
               >
+                <Image src="/github-dark.png" alt="GitHub" width={20} height={20} />
                 GitHub
               </a>
               <a
-                href={linkedinLink}
+                href={formatUrl(linkedinLink)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glass-card px-6 py-3 font-medium hover:bg-foreground hover:text-background transition-all"
+                className="glass-card px-4 py-3 font-medium hover:bg-foreground hover:text-background transition-all flex items-center gap-2"
               >
+                <Image src="/linkedin.png" alt="LinkedIn" width={20} height={20} />
                 LinkedIn
               </a>
             </div>
