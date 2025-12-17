@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTheme } from './ThemeProvider';
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -12,6 +13,12 @@ const navItems = [
 
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState('home');
+  const [mounted, setMounted] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,6 +59,17 @@ export default function Navigation() {
               </a>
             </li>
           ))}
+          {mounted && (
+            <li>
+              <button
+                onClick={toggleTheme}
+                className="text-sm font-medium transition-colors hover:text-foreground text-accent"
+                aria-label="Toggle theme"
+              >
+                {theme === 'light' ? '🌙' : '☀️'}
+              </button>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

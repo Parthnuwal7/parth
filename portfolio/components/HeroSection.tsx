@@ -39,30 +39,27 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
           {/* Right - Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-5xl font-bold mb-2">
+              <h1 className="text-5xl font-bold mb-3">
                 {siteCopy.name || 'Parth Nuwal'}
               </h1>
-              <p className="text-xl text-accent mb-6">
-                {siteCopy.role || 'Backend Engineer · AI Systems'}
+              {/* <p className="text-2xl font-semibold mb-2">
+                {siteCopy.role || 'Machine Learning Engineer'}
+              </p> */}
+              <p className="text-lg text-accent mb-6">
+                {siteCopy.subtitle || 'Backend • Data • ML Systems'}
               </p>
             </div>
 
-            <p className="text-lg leading-relaxed">
-              {siteCopy.valueStatement || 
-                'Building scalable backend systems and AI solutions that solve real problems.'}
-            </p>
-
-            <ul className="space-y-2">
-              {(siteCopy.proofPoints || 
-                'Production-ready APIs serving millions of requests|RAG systems with measurable accuracy improvements|Clean architecture that teams actually want to maintain')
-                .split('|')
-                .map((point, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-accent mt-1">▸</span>
-                    <span>{point.trim()}</span>
-                  </li>
-                ))}
-            </ul>
+            <div className="space-y-4 text-base leading-relaxed text-justify">
+              <p>
+                {siteCopy.intro || 
+                  'Final-year undergraduate from Jaipur, India with a strong backend and data-driven mindset. I enjoy working on the backend side of systems - building APIs, integrating ML workflows and designing reliable services from scratch to MVP.'}
+              </p>
+              <p>
+                {siteCopy.experience || 
+                  'My work has primarily involved Python, FastAPI backends, ML pipelines and system-level problem solving. I focus on correctness, clarity and building things that actually work beyond demos.'}
+              </p>
+            </div>
 
             <div className="flex gap-4 pt-4">
               <a
