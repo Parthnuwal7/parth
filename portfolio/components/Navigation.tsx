@@ -1,24 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTheme } from './ThemeProvider';
 
 const navItems = [
   { name: 'Home', href: '#home' },
   { name: 'Projects', href: '#projects' },
-  { name: 'About', href: '#about' },
-  { name: 'Socials', href: '#socials' },
+  { name: 'Skills', href: '#about' },
   { name: 'Leave a message', href: '#message' },
 ];
 
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState('home');
-  const [mounted, setMounted] = useState(false);
-  const { theme, toggleTheme } = useTheme();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,14 +34,14 @@ export default function Navigation() {
   }, []);
 
   return (
-    <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-      <div className="glass-card px-6 py-3 shadow-lg backdrop-blur-md">
-        <ul className="flex gap-8 items-center">
+    <nav className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] md:w-auto">
+      <div className="glass-card px-3 md:px-6 py-3 shadow-lg backdrop-blur-md">
+        <ul className="flex gap-3 md:gap-8 items-center justify-center flex-wrap">
           {navItems.map((item) => (
             <li key={item.name}>
               <a
                 href={item.href}
-                className={`text-sm font-medium transition-colors hover:text-foreground ${
+                className={`text-xs md:text-sm font-medium transition-colors hover:text-foreground ${
                   activeSection === item.href.slice(1)
                     ? 'text-foreground'
                     : 'text-accent'
@@ -59,17 +51,6 @@ export default function Navigation() {
               </a>
             </li>
           ))}
-          {mounted && (
-            <li>
-              <button
-                onClick={toggleTheme}
-                className="text-sm font-medium transition-colors hover:text-foreground text-accent"
-                aria-label="Toggle theme"
-              >
-                {theme === 'light' ? '🌙' : '☀️'}
-              </button>
-            </li>
-          )}
         </ul>
       </div>
     </nav>

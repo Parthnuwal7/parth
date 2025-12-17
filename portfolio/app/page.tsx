@@ -1,4 +1,5 @@
 import Navigation from '@/components/Navigation';
+import ThemeToggle from '@/components/ThemeToggle';
 import HeroSection from '@/components/HeroSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import AboutMeSection from '@/components/AboutMeSection';
@@ -21,8 +22,9 @@ export default async function Home() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen px-6 pt-24">
-        <div className="max-w-7xl mx-auto glass-card p-8 md:p-40">
+      <ThemeToggle />
+      <div className="min-h-screen px-3 md:px-6 pt-24 md:pt-25">
+        <div className="max-w-7xl mx-auto glass-card p-4 md:p-8 lg:p-12">
           <main>
             <HeroSection siteCopy={siteCopy} socialLinks={socialLinks} />
             <ProjectsSection projects={projects} />

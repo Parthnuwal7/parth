@@ -34,11 +34,11 @@ export default function MessageSection() {
   };
 
   return (
-    <section id="message" className="min-h-screen py-20 px-6">
+    <section id="message" className="py-8 md:py-12 px-0 md:px-6">
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-4xl font-bold mb-12 text-center">Leave a Message</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">Leave a Message</h2>
 
-        <form onSubmit={handleSubmit} className="glass-card p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="glass-card p-4 md:p-8 space-y-4 md:space-y-6">
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-2">
               Name
@@ -84,7 +84,7 @@ export default function MessageSection() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full glass-card px-6 py-3 font-medium hover:bg-foreground hover:text-background transition-all disabled:opacity-50"
+            className="w-full glass-card px-6 py-3 font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all disabled:opacity-50"
           >
             {status === 'loading' ? 'Sending...' : 'Send Message'}
           </button>

@@ -108,7 +108,7 @@ export async function getSocialLinks() {
   const sheets = getGoogleSheetsClient();
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
-    range: `${SHEETS.SOCIAL_LINKS}!A2:C`,
+    range: `${SHEETS.SOCIAL_LINKS}!A2:E`,
   });
 
   const rows = response.data.values || [];
@@ -116,6 +116,8 @@ export async function getSocialLinks() {
     name: row[0] || '',
     url: row[1] || '',
     icon: row[2] || '',
+    iconLight: row[3] || '',
+    iconDark: row[4] || '',
   }));
 }
 

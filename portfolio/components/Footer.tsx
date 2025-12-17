@@ -1,6 +1,6 @@
 interface FooterProps {
   visitorCount: number;
-  socialLinks: Array<{ name: string; url: string; icon: string }>;
+  socialLinks: Array<{ name: string; url: string; icon: string; iconLight?: string; iconDark?: string }>;
 }
 
 export default function Footer({ visitorCount, socialLinks }: FooterProps) {
@@ -11,9 +11,9 @@ export default function Footer({ visitorCount, socialLinks }: FooterProps) {
   const emailLink = socialLinks.find(link => link.name.toLowerCase() === 'email')?.url || 'mailto:your@email.com';
 
   return (
-    <footer id="socials" className="bg-accent/20 py-12 px-6">
+    <footer id="socials" className="bg-accent/20 py-8 md:py-12 px-4 md:px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-wrap justify-center gap-6 mb-6">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-6 text-sm md:text-base">
           <a href="#projects" className="text-accent hover:text-foreground transition-colors">
             Projects
           </a>
@@ -32,10 +32,10 @@ export default function Footer({ visitorCount, socialLinks }: FooterProps) {
         </div>
 
         <div className="text-center space-y-2">
-          <p className="text-sm text-accent">
+          <p className="text-xs md:text-sm text-accent">
             Visitors: {visitorCount.toLocaleString()}
           </p>
-          <p className="text-sm text-accent">
+          <p className="text-xs md:text-sm text-accent">
             © {currentYear} All rights reserved
           </p>
         </div>
