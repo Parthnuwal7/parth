@@ -109,13 +109,13 @@ html {
   display: none;
 }
 
-/* Carousel animation */
+/* Carousel animation - scrolls through first third of triplicated content */
 @keyframes scroll {
   0% {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-33.333%);
   }
 }
 

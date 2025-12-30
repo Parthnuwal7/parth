@@ -67,7 +67,7 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
               </p>
             </div>
 
-            <div className="space-y-3 md:space-y-4 text-sm md:text-base leading-relaxed text-justify">
+            <div className="space-y-3 md:space-y-4 text-md md:text-base leading-8 text-justify">
               <p>
                 {siteCopy.intro || 
                   'Final-year CS undergraduate with a strong backend and data-driven mindset. I enjoy working on the backend side of systems - building APIs, integrating ML workflows and designing reliable services from scratch to MVP.'}

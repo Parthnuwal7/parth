@@ -38,7 +38,7 @@ export async function getProjects() {
   const sheets = getGoogleSheetsClient();
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
-    range: `${SHEETS.PROJECTS}!A2:G`,
+    range: `${SHEETS.PROJECTS}!A2:I`,
   });
 
   const rows = response.data.values || [];
@@ -50,6 +50,8 @@ export async function getProjects() {
     techStack: row[4] ? row[4].split(',').map((t: string) => t.trim()) : [],
     githubUrl: row[5] || '',
     order: parseInt(row[6] || '0'),
+    liveUrl: row[7] || '',
+    specialTag: row[8] || '',
   }));
 }
 

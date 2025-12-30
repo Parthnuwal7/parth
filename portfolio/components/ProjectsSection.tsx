@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useRef } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 interface Project {
   id: string;
@@ -11,6 +11,8 @@ interface Project {
   techStack: string[];
   githubUrl: string;
   order: number;
+  liveUrl: string;
+  specialTag: string;
 }
 
 interface ProjectsSectionProps {
@@ -18,181 +20,368 @@ interface ProjectsSectionProps {
 }
 
 export default function ProjectsSection({ projects }: ProjectsSectionProps) {
-  const [isPaused, setIsPaused] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const startX = useRef<number>(0);
-  const scrollLeft = useRef<number>(0);
-  const resumeTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(1); // Start at 1 (first real card in cloned array)
+  const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
-  
-  // Duplicate projects for infinite scroll effect
-  const displayProjects = sortedProjects.length > 0 ? [...sortedProjects, ...sortedProjects] : [];
+  const projectCount = sortedProjects.length;
 
-  const resumeAutoScroll = () => {
-    if (resumeTimeout.current) {
-      clearTimeout(resumeTimeout.current);
+  // Create infinite scroll array: [last, ...all, first]
+  // Index 0 = clone of last, Index 1 to projectCount = real cards, Index projectCount+1 = clone of first
+  const displayProjects = projectCount > 0
+    ? [sortedProjects[projectCount - 1], ...sortedProjects, sortedProjects[0]]
+    : [];
+
+  // Card width + gap for scroll amount
+  const cardWidth = 320 + 20; // w-80 = 320px, gap-5 = 20px
+
+  // Scroll to center a specific card index
+  const scrollToIndex = useCallback((index: number, smooth: boolean = true) => {
+    if (scrollRef.current) {
+      const containerWidth = scrollRef.current.clientWidth;
+      // Scroll position to center the card
+      const scrollPosition = (index * cardWidth) + 20 - (containerWidth / 2) + 160;
+      scrollRef.current.scrollTo({
+        left: Math.max(0, scrollPosition),
+        behavior: smooth ? 'smooth' : 'instant'
+      });
     }
-    resumeTimeout.current = setTimeout(() => {
+  }, [cardWidth]);
+
+  // Initialize: scroll to first real card on mount
+  useEffect(() => {
+    if (projectCount > 0) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        scrollToIndex(1, false);
+      }, 100);
+    }
+  }, [projectCount, scrollToIndex]);
+
+  // Track if we're in the middle of a wrap-around
+  const isWrapping = useRef(false);
+  const wrapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // When currentIndex changes, scroll to center that card and handle wrapping
+  useEffect(() => {
+    if (projectCount === 0) return;
+
+    // Clear any pending wrap timeout
+    if (wrapTimeoutRef.current) {
+      clearTimeout(wrapTimeoutRef.current);
+    }
+
+    // Reset isWrapping if index is in valid range
+    if (currentIndex >= 1 && currentIndex <= projectCount) {
+      isWrapping.current = false;
+    }
+
+    // Skip scroll if we're in the middle of wrapping
+    if (isWrapping.current) return;
+
+    // Normalize index if it went too far out of bounds (rapid clicking)
+    if (currentIndex < 0) {
+      setCurrentIndex(projectCount);
+      return;
+    }
+    if (currentIndex > projectCount + 1) {
+      setCurrentIndex(1);
+      return;
+    }
+
+    // First, scroll to the target (could be a clone)
+    scrollToIndex(currentIndex);
+
+    // Handle wrap-around after scroll animation completes
+    wrapTimeoutRef.current = setTimeout(() => {
+      // If we scrolled to the clone at the beginning (index 0), instantly jump to last real card
+      if (currentIndex === 0) {
+        isWrapping.current = true;
+        scrollToIndex(projectCount, false);
+        setCurrentIndex(projectCount);
+        setTimeout(() => { isWrapping.current = false; }, 50);
+      }
+      // If we scrolled to the clone at the end (index projectCount+1), instantly jump to first real card
+      else if (currentIndex === projectCount + 1) {
+        isWrapping.current = true;
+        scrollToIndex(1, false);
+        setCurrentIndex(1);
+        setTimeout(() => { isWrapping.current = false; }, 50);
+      }
+    }, 400);
+
+    return () => {
+      if (wrapTimeoutRef.current) {
+        clearTimeout(wrapTimeoutRef.current);
+      }
+    };
+  }, [currentIndex, projectCount, scrollToIndex]);
+
+  // Auto-slideshow: advance to next card every 4 seconds
+  useEffect(() => {
+    if (isPaused || projectCount === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex(prev => prev + 1);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isPaused, projectCount]);
+
+  // Resume slideshow after inactivity
+  const resumeSlideshow = useCallback(() => {
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+    }
+    resumeTimeoutRef.current = setTimeout(() => {
       setIsPaused(false);
-    }, 300); // Resume after 300ms of no interaction
-  };
+    }, 1000); // Resume after 1 second of no interaction
+  }, []);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  // Pause slideshow
+  const pauseSlideshow = useCallback(() => {
     setIsPaused(true);
-    setIsDragging(true);
-    startX.current = e.touches[0].pageX;
-    if (scrollRef.current) {
-      scrollLeft.current = scrollRef.current.scrollLeft;
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
     }
-    if (resumeTimeout.current) {
-      clearTimeout(resumeTimeout.current);
-    }
+  }, []);
+
+  // Left arrow: go to previous card
+  const scrollLeftHandler = () => {
+    pauseSlideshow();
+    isWrapping.current = false; // Reset wrap state on click
+    setCurrentIndex(prev => {
+      const next = prev - 1;
+      // Clamp to valid range including clones
+      return Math.max(0, next);
+    });
+    resumeSlideshow();
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !scrollRef.current) return;
-    const x = e.touches[0].pageX;
-    const walk = (startX.current - x) * 2; // Multiply for faster scroll
-    scrollRef.current.scrollLeft = scrollLeft.current + walk;
+  // Right arrow: go to next card
+  const scrollRightHandler = () => {
+    pauseSlideshow();
+    isWrapping.current = false; // Reset wrap state on click
+    setCurrentIndex(prev => {
+      const next = prev + 1;
+      // Clamp to valid range including clones
+      return Math.min(projectCount + 1, next);
+    });
+    resumeSlideshow();
   };
 
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    resumeAutoScroll();
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsPaused(true);
-    setIsDragging(true);
-    startX.current = e.pageX;
-    if (scrollRef.current) {
-      scrollLeft.current = scrollRef.current.scrollLeft;
-    }
-    if (resumeTimeout.current) {
-      clearTimeout(resumeTimeout.current);
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX;
-    const walk = (startX.current - x) * 2;
-    scrollRef.current.scrollLeft = scrollLeft.current + walk;
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    resumeAutoScroll();
-  };
-
-  const handleMouseLeave = () => {
-    if (isDragging) {
-      setIsDragging(false);
-      resumeAutoScroll();
-    } else {
-      // Just hovering without dragging, resume immediately
-      resumeAutoScroll();
-    }
+  // Get the "real" index for highlighting (1 to projectCount are real cards)
+  const getRealIndex = (index: number) => {
+    if (index === 0) return projectCount; // Clone of last
+    if (index === projectCount + 1) return 1; // Clone of first
+    return index;
   };
 
   return (
-    <section id="projects" className="py-12 md:py-20 px-0 md:px-10">
+    <section id="projects" className="py-12 md:py-20 px-0 md:px-10 bg-black/90">
       <div className="mx-auto">
+        {/* Title */}
         <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">Projects</h2>
 
-        <div 
-          ref={scrollRef}
-          className="overflow-x-scroll overflow-y-hidden py-4 scrollbar-hide cursor-grab active:cursor-grabbing"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          onMouseEnter={() => {
-            if (resumeTimeout.current) {
-              clearTimeout(resumeTimeout.current);
-            }
-            if (!isDragging) setIsPaused(true);
-          }}
-          onMouseLeave={handleMouseLeave}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-        >
-          <div 
-            className={`flex gap-5 px-5 ${sortedProjects.length > 0 ? 'animate-scroll' : ''} ${isPaused ? 'paused' : ''}`} 
-            style={{ 
-              '--num-cards': sortedProjects.length,
-              width: 'max-content' 
-            } as React.CSSProperties}
+        {/* Carousel container with arrows on sides */}
+        <div className="relative">
+          {/* Left blur gradient overlay */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
+            style={{
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              maskImage: 'linear-gradient(to right, black 0%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, black 0%, transparent 100%)'
+            }}
+          />
+
+          {/* Right blur gradient overlay */}
+          <div
+            className="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none"
+            style={{
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              maskImage: 'linear-gradient(to left, black 0%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to left, black 0%, transparent 100%)'
+            }}
+          />
+
+          {/* Left Arrow */}
+          <button
+            onClick={scrollLeftHandler}
+            className="glass-card p-2 md:p-3 hover:scale-110 transition-transform"
+            style={{
+              position: 'absolute',
+              left: '8px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 20
+            }}
+            aria-label="Scroll left"
           >
-          {displayProjects.map((project, index) => (
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+
+          {/* Right Arrow */}
+          <button
+            onClick={scrollRightHandler}
+            className="glass-card p-2 md:p-3 hover:scale-110 transition-transform"
+            style={{
+              position: 'absolute',
+              right: '8px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 20
+            }}
+            aria-label="Scroll right"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+
+          {/* Scrollable carousel with snap */}
+          <div
+            ref={scrollRef}
+            className="overflow-x-scroll overflow-y-hidden py-4 scrollbar-hide snap-x snap-mandatory"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            onMouseEnter={pauseSlideshow}
+            onMouseLeave={resumeSlideshow}
+            onTouchStart={pauseSlideshow}
+            onTouchEnd={resumeSlideshow}
+          >
             <div
-              key={`${project.id}-${index}`}
-              className="glass-card p-8 hover:shadow-2xl hover:scale-105 transition-all cursor-pointer flex-shrink-0 w-80 h-120"
+              className="flex gap-5 px-5 items-center"
+              style={{ width: 'max-content' }}
             >
-              {/* Image */}
-              <div className="w-full h-48 bg-accent/10 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                {project.image ? (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-4xl">📦</span>
-                )}
-              </div>
+              {displayProjects.map((project, index) => {
+                // Determine if this card should be focused
+                // Handle clones: when currentIndex is at clone, highlight both clone and corresponding real card
+                const isFocused =
+                  index === currentIndex ||
+                  // If we're at clone at end (projectCount+1), also highlight first real card (index 1)
+                  (currentIndex === projectCount + 1 && index === 1) ||
+                  // If we're at clone at start (0), also highlight last real card (index projectCount)
+                  (currentIndex === 0 && index === projectCount) ||
+                  // Vice versa: if we're at first real card, also highlight clone at end
+                  (currentIndex === 1 && index === projectCount + 1) ||
+                  // If we're at last real card, also highlight clone at start
+                  (currentIndex === projectCount && index === 0);
 
-              {/* Title */}
-              <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-
-              {/* Description */}
-              <p className="text-accent text-sm mb-4 line-clamp-2">
-                {project.description}
-              </p>
-
-              {/* Tech Stack */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.techStack.slice(0, 3).map((tech, i) => (
-                  <span
-                    key={i}
-                    className="text-xs px-2 py-1 rounded bg-accent/10 text-accent"
+                return (
+                  <div
+                    key={`${project.id}-${index}`}
+                    className={`glass-card p-8 transition-all duration-300 cursor-pointer flex-shrink-0 snap-center w-80
+                      ${isFocused
+                        ? 'md:w-96 md:scale-105 shadow-2xl border-2 border-accent z-10'
+                        : 'md:w-80 md:scale-85 opacity-50 hover:opacity-70 border border-accent/30'
+                      }`}
+                    style={{ height: '480px' }}
                   >
-                    {tech}
-                  </span>
-                ))}
-                {project.techStack.length > 3 && (
-                  <span className="text-xs px-2 py-1 text-accent">
-                    +{project.techStack.length - 3}
-                  </span>
-                )}
-              </div>
+                    {/* Special Tag */}
+                    {project.specialTag && (() => {
+                      const tag = project.specialTag.toLowerCase();
+                      const isLive = tag.includes('deployed') || tag.includes('live');
+                      const isPython = tag.includes('python') || tag.includes('library');
 
-              {/* Links */}
-              <div className="flex gap-25">
-                {project.githubUrl && (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="glass-card px-4 py-2 text-sm font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    GitHub
-                  </a>
-                )}
-                <Link
-                  href={`/projects/${project.id}`}
-                  className="glass-card px-4 py-2 text-sm font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all"
-                >
-                  Details
-                </Link>
-              </div>
+                      let colorClass = 'bg-accent/20 text-accent border-accent/40'; // default
+                      if (isLive) {
+                        colorClass = 'bg-green-500/20 text-green-400 border-green-500/40';
+                      } else if (isPython) {
+                        colorClass = 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40';
+                      }
+
+                      return (
+                        <div className="mb-3">
+                          <span className={`text-xs px-3 py-1 rounded-full font-semibold border ${colorClass}`}>
+                            {project.specialTag}
+                          </span>
+                        </div>
+                      );
+                    })()}
+
+                    {/* Image */}
+                    <div className={`w-full ${project.specialTag ? 'h-40' : 'h-48'} bg-accent/10 rounded-lg mb-4 flex items-center justify-center overflow-hidden`}>
+                      {project.image ? (
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <span className="text-4xl">📦</span>
+                      )}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+
+                    {/* Description */}
+                    <p className="text-accent text-sm mb-4 line-clamp-2">
+                      {project.description}
+                    </p>
+
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.techStack.slice(0, 3).map((tech, i) => (
+                        <span
+                          key={i}
+                          className="text-xs px-2 py-1 rounded bg-accent/10 text-accent"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.techStack.length > 3 && (
+                        <span className="text-xs px-2 py-1 text-accent">
+                          +{project.techStack.length - 3}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Links */}
+                    <div className="flex justify-between items-center gap-2 mt-auto">
+                      {/* Left side - GitHub */}
+                      <div className="flex gap-2">
+                        {project.githubUrl && (
+                          <a
+                            href={project.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="glass-card px-3 py-2 text-sm font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            GitHub
+                          </a>
+                        )}
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="glass-card px-3 py-2 text-sm font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Link
+                          </a>
+                        )}
+                      </div>
+                      {/* Right side - Details */}
+                      <Link
+                        href={`/projects/${project.id}`}
+                        className="glass-card px-3 py-2 text-sm font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all"
+                      >
+                        Details
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          ))}
           </div>
         </div>
 
