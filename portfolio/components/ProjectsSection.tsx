@@ -180,10 +180,10 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
   };
 
   return (
-    <section id="projects" className="py-12 md:py-20 px-0 md:px-10 bg-black/90">
+    <section id="projects" className="py-12 md:py-20 px-0 md:px-10 bg-gray-200 dark:bg-black/90">
       <div className="mx-auto">
         {/* Title */}
-        <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center">Projects</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center dark:text-white">Projects</h2>
 
         {/* Carousel container with arrows on sides */}
         <div className="relative">

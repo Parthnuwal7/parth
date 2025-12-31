@@ -58,27 +58,53 @@ export async function getProjects() {
 // Get project details by ID
 export async function getProjectDetails(id: string) {
   const sheets = getGoogleSheetsClient();
-  const response = await sheets.spreadsheets.values.get({
+
+  // Get project details (A-L: id, problem, whatIBuilt, architecture, hardProblems, tradeoffs, improvements, deepDive, demoUrl, tags, githubURL, ui_snapshots)
+  const detailsResponse = await sheets.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
-    range: `${SHEETS.PROJECT_DETAILS}!A2:J`,
+    range: `${SHEETS.PROJECT_DETAILS}!A2:L`,
   });
 
-  const rows = response.data.values || [];
-  const project = rows.find((row) => row[0] === id);
+  // Get basic project info (for title, liveUrl)
+  const projectsResponse = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `${SHEETS.PROJECTS}!A2:I`,
+  });
 
-  if (!project) return null;
+  const detailRows = detailsResponse.data.values || [];
+  const projectRows = projectsResponse.data.values || [];
+
+  const details = detailRows.find((row) => row[0] === id);
+  const projectInfo = projectRows.find((row) => row[0] === id);
+
+  if (!details) return null;
+
+  // Parse ui_snapshots - remove brackets if present
+  let uiSnapshots: string[] = [];
+  if (details[11]) {
+    let snapshotsStr = details[11].trim();
+    // Remove surrounding brackets if present
+    if (snapshotsStr.startsWith('[') && snapshotsStr.endsWith(']')) {
+      snapshotsStr = snapshotsStr.slice(1, -1);
+    }
+    uiSnapshots = snapshotsStr.split('|').map((t: string) => t.trim()).filter(Boolean);
+  }
 
   return {
-    id: project[0] || '',
-    problem: project[1] || '',
-    whatIBuilt: project[2] ? project[2].split('|').map((t: string) => t.trim()) : [],
-    architecture: project[3] || '',
-    hardProblems: project[4] ? project[4].split('|').map((t: string) => t.trim()) : [],
-    tradeoffs: project[5] ? project[5].split('|').map((t: string) => t.trim()) : [],
-    improvements: project[6] ? project[6].split('|').map((t: string) => t.trim()) : [],
-    deepDive: project[7] || '',
-    demoUrl: project[8] || '',
-    tags: project[9] ? project[9].split(',').map((t: string) => t.trim()) : [],
+    id: details[0] || '',
+    title: projectInfo?.[1] || details[0] || '',
+    liveUrl: projectInfo?.[7] || '',
+    problem: details[1] || '',
+    whatIBuilt: details[2] ? details[2].split('|').map((t: string) => t.trim()) : [],
+    architecture: details[3] || '',
+    hardProblems: details[4] ? details[4].split('|').map((t: string) => t.trim()) : [],
+    tradeoffs: details[5] ? details[5].split('|').map((t: string) => t.trim()) : [],
+    improvements: details[6] ? details[6].split('|').map((t: string) => t.trim()) : [],
+    deepDive: details[7] || '',
+    demoUrl: details[8] || '',
+    tags: details[9] ? details[9].split(',').map((t: string) => t.trim()) : [],
+    githubUrl: details[10] || '',
+    uiSnapshots,
   };
 }
 

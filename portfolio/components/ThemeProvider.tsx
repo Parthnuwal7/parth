@@ -19,7 +19,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setMounted(true);
     const stored = localStorage.getItem('theme') as Theme;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = stored || (prefersDark ? 'dark' : 'light');
+    const initialTheme = stored || 'dark'; // Default to dark mode
     setTheme(initialTheme);
     document.documentElement.classList.toggle('dark', initialTheme === 'dark');
   }, []);
@@ -44,7 +44,7 @@ export function useTheme() {
   const context = useContext(ThemeContext);
   if (!context) {
     // Return default values during SSR
-    return { theme: 'light' as Theme, toggleTheme: () => {} };
+    return { theme: 'light' as Theme, toggleTheme: () => { } };
   }
   return context;
 }

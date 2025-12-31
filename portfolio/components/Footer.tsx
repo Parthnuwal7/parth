@@ -17,7 +17,7 @@ export default function Footer({ visitorCount, socialLinks }: FooterProps) {
           <a href="#projects" className="text-accent hover:text-foreground transition-colors">
             Projects
           </a>
-          <a href="/resume.pdf" className="text-accent hover:text-foreground transition-colors">
+          <a href="https://drive.google.com/file/d/12p7I3-seaEFth7eBksSykvCYBtwT6Lfp/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-foreground transition-colors">
             Resume
           </a>
           <a href={githubLink} target="_blank" rel="noopener noreferrer" className="text-accent hover:text-foreground transition-colors">

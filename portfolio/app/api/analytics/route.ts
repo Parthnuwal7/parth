@@ -14,18 +14,18 @@ interface IPInfoResponse {
 
 export async function POST(request: NextRequest) {
   try {
-    const { path, visitorId: clientVisitorId, referrer } = await request.json();
-    
+    const { path, visitorId: clientVisitorId, referrer, event } = await request.json();
+
     // Get IP from headers - try multiple sources
-    let ip = 
-      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-      request.headers.get('x-real-ip') || 
+    let ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
       request.headers.get('cf-connecting-ip') || // Cloudflare
       request.headers.get('x-client-ip') ||
       request.headers.get('x-cluster-client-ip') ||
       request.headers.get('forwarded')?.split(',')[0]?.trim() ||
       'unknown';
-    
+
     // If still unknown, try to get from request
     if (ip === 'unknown') {
       const requestIP = (request as any).ip;
@@ -33,19 +33,19 @@ export async function POST(request: NextRequest) {
         ip = requestIP;
       }
     }
-    
+
     console.log('Captured IP:', ip);
     console.log('Headers:', {
       'x-forwarded-for': request.headers.get('x-forwarded-for'),
       'x-real-ip': request.headers.get('x-real-ip'),
       'cf-connecting-ip': request.headers.get('cf-connecting-ip'),
     });
-    
+
     const userAgent = request.headers.get('user-agent') || 'unknown';
-    
+
     // Generate or use existing visitor ID
     const visitorId = clientVisitorId || uuidv4();
-    
+
     // Check if this is a new or existing visitor (safely)
     let isExisting = false;
     try {
@@ -54,11 +54,11 @@ export async function POST(request: NextRequest) {
       console.log('Could not check visitor existence, defaulting to New');
       isExisting = false;
     }
-    
+
     // Fetch location data from ipinfo.io
     let ipData: IPInfoResponse | null = null;
     const ipinfoToken = process.env.IPINFO_TOKEN;
-    
+
     if (ipinfoToken && ip !== 'unknown' && ip !== '127.0.0.1' && !ip.startsWith('192.168.')) {
       try {
         const response = await fetch(`https://ipinfo.io/${ip}?token=${ipinfoToken}`);
@@ -69,10 +69,10 @@ export async function POST(request: NextRequest) {
         console.error('Error fetching IP info:', error);
       }
     }
-    
+
     // Parse location data
     const [latitude = '', longitude = ''] = ipData?.loc?.split(',') || ['', ''];
-    
+
     // Determine source from referrer
     let source = 'Direct';
     if (referrer && referrer !== '') {
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
         source = 'Direct';
       }
     }
-    
+
     // Prepare visitor data
     const visitorData = {
       timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
@@ -100,12 +100,12 @@ export async function POST(request: NextRequest) {
       longitude,
       source: 'ipinfo.io',
       status: isExisting ? 'Existing' : 'New',
-      path: path || '/',
+      path: event ? `EVENT: ${event}` : (path || '/'),
     };
-    
+
     await logVisitor(visitorData);
-    
-    return NextResponse.json({ 
+
+    return NextResponse.json({
       success: true,
       visitorId,
       isNew: !isExisting

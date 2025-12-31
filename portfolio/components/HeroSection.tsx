@@ -13,7 +13,7 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
   const linkedin = socialLinks.find(link => link.name.toLowerCase() === 'linkedin');
   const resume = socialLinks.find(link => link.name.toLowerCase() === 'resume');
   const { theme } = useTheme();
-  
+
   // Get the appropriate icon based on theme
   const getIcon = (link: typeof github) => {
     if (!link) return null;
@@ -21,7 +21,7 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
     if (theme === 'light' && link.iconLight) return link.iconLight;
     return link.icon; // fallback to default icon
   };
-  
+
   // Ensure URLs have proper protocol
   const formatUrl = (url: string) => {
     const cleanUrl = url.trim();
@@ -69,20 +69,33 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
 
             <div className="space-y-3 md:space-y-4 text-md md:text-base leading-8 text-justify">
               <p>
-                {siteCopy.intro || 
+                {siteCopy.intro ||
                   'Final-year CS undergraduate with a strong backend and data-driven mindset. I enjoy working on the backend side of systems - building APIs, integrating ML workflows and designing reliable services from scratch to MVP.'}
               </p>
               <p>
-                {siteCopy.experience || 
+                {siteCopy.experience ||
                   'My work has primarily involved Python, FastAPI backends, ML pipelines and Natural language processing (NLP). I focus on clarity and building things that work beyond demos.'}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3 md:gap-4 pt-4">
               <a
-                href="/resume.pdf"
-                download
+                href="https://drive.google.com/file/d/12p7I3-seaEFth7eBksSykvCYBtwT6Lfp/view?usp=drivesdk"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="glass-card px-4 py-3 font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all flex items-center gap-2"
+                onClick={() => {
+                  // Log resume click event (bypasses normal time limit)
+                  fetch('/api/analytics', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      event: 'resume_click',
+                      visitorId: localStorage.getItem('portfolio_visitor_id'),
+                      referrer: document.referrer || 'Direct'
+                    }),
+                  }).catch(console.error);
+                }}
               >
                 {resume && getIcon(resume) && <Image src={`/${getIcon(resume)}`} alt="Resume" width={20} height={20} />}
                 Resume
@@ -93,6 +106,17 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
                   target="_blank"
                   rel="noopener noreferrer"
                   className="glass-card px-4 py-3 font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all flex items-center gap-2"
+                  onClick={() => {
+                    fetch('/api/analytics', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        event: 'github_click',
+                        visitorId: localStorage.getItem('portfolio_visitor_id'),
+                        referrer: document.referrer || 'Direct'
+                      }),
+                    }).catch(console.error);
+                  }}
                 >
                   {getIcon(github) && <Image src={`/${getIcon(github)}`} alt="GitHub" width={20} height={20} />}
                 </a>
@@ -103,6 +127,17 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
                   target="_blank"
                   rel="noopener noreferrer"
                   className="glass-card px-4 py-3 font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all flex items-center gap-2"
+                  onClick={() => {
+                    fetch('/api/analytics', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        event: 'linkedin_click',
+                        visitorId: localStorage.getItem('portfolio_visitor_id'),
+                        referrer: document.referrer || 'Direct'
+                      }),
+                    }).catch(console.error);
+                  }}
                 >
                   {getIcon(linkedin) && <Image src={`/${getIcon(linkedin)}`} alt="LinkedIn" width={20} height={20} />}
                 </a>
