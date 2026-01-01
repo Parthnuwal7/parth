@@ -29,6 +29,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   const [project, setProject] = useState<ProjectDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentSnapshot, setCurrentSnapshot] = useState(0);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   // Use React.use() to unwrap the params promise
   const unwrappedParams = React.use(params);
@@ -141,13 +142,17 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {project.architecture && (
             <section>
               <h2 className="text-2xl font-semibold mb-4">Architecture</h2>
-              <div className="bg-accent/5 p-4 rounded-lg overflow-hidden">
+              <div
+                className="bg-accent/5 p-4 rounded-lg overflow-hidden cursor-zoom-in max-h-80 flex items-center justify-center"
+                onClick={() => setLightboxImage(project.architecture)}
+              >
                 <img
                   src={project.architecture}
                   alt="Architecture diagram"
-                  className="w-full rounded-lg"
+                  className="max-h-72 max-w-full object-contain rounded-lg hover:opacity-90 transition-opacity"
                 />
               </div>
+              <p className="text-xs text-center text-accent/60 mt-2">Click to enlarge</p>
             </section>
           )}
 
@@ -307,6 +312,27 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           </div>
         )}
       </div>
+
+      {/* Lightbox Modal */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+          onClick={() => setLightboxImage(null)}
+        >
+          <button
+            className="absolute top-4 right-4 text-white hover:text-accent text-3xl font-bold z-10"
+            onClick={() => setLightboxImage(null)}
+          >
+            ×
+          </button>
+          <img
+            src={lightboxImage}
+            alt="Architecture diagram enlarged"
+            className="max-w-full max-h-full object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </main>
   );
 }
