@@ -328,7 +328,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
 
                     {/* Tech Stack */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {project.techStack.slice(0, 3).map((tech, i) => (
+                      {project.techStack.map((tech, i) => (
                         <span
                           key={i}
                           className="text-xs px-2 py-1 rounded bg-accent/10 text-accent"
@@ -336,11 +336,6 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                           {tech}
                         </span>
                       ))}
-                      {project.techStack.length > 3 && (
-                        <span className="text-xs px-2 py-1 text-accent">
-                          +{project.techStack.length - 3}
-                        </span>
-                      )}
                     </div>
 
                     {/* Links */}
