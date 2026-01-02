@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import * as React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface ProjectDetails {
   id: string;
@@ -159,21 +160,18 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {/* Problem */}
           <section>
             <h2 className="text-2xl font-semibold mb-4">Problem</h2>
-            <p className="leading-relaxed text-foreground/80">{project.problem}</p>
+            <div className="markdown-content text-foreground/80">
+              <ReactMarkdown>{project.problem}</ReactMarkdown>
+            </div>
           </section>
 
           {/* What I Built */}
           {project.whatIBuilt.length > 0 && (
             <section>
               <h2 className="text-2xl font-semibold mb-4">What I Built</h2>
-              <ul className="space-y-2">
-                {project.whatIBuilt.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-accent mt-1">•</span>
-                    <span className="text-foreground/80">{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="markdown-content text-foreground/80">
+                <ReactMarkdown>{project.whatIBuilt.join('\n\n')}</ReactMarkdown>
+              </div>
             </section>
           )}
 
@@ -237,29 +235,19 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           {project.hardProblems.length > 0 && (
             <section>
               <h2 className="text-2xl font-semibold mb-4">Hard Problems Solved</h2>
-              <ul className="space-y-3">
-                {project.hardProblems.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-accent mt-1">▸</span>
-                    <span className="text-foreground/80">{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="markdown-content text-foreground/80">
+                <ReactMarkdown>{project.hardProblems.join('\n\n')}</ReactMarkdown>
+              </div>
             </section>
           )}
 
           {/* Trade-offs */}
           {project.tradeoffs.length > 0 && (
             <section>
-              <h2 className="text-2xl font-semibold mb-4">Trade-offs</h2>
-              <ul className="space-y-3">
-                {project.tradeoffs.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-accent mt-1">⚖</span>
-                    <span className="text-foreground/80">{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <h2 className="text-2xl font-semibold mb-4">Trade-offs & Design Decisions</h2>
+              <div className="markdown-content text-foreground/80">
+                <ReactMarkdown>{project.tradeoffs.join('\n\n')}</ReactMarkdown>
+              </div>
             </section>
           )}
 
