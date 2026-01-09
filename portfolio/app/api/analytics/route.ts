@@ -12,9 +12,19 @@ interface IPInfoResponse {
   timezone: string;
 }
 
+interface CachedLocationData {
+  country: string;
+  region: string;
+  city: string;
+  timezone: string;
+  isp: string;
+  latitude: string;
+  longitude: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const { path, visitorId: clientVisitorId, referrer, event } = await request.json();
+    const { path, visitorId: clientVisitorId, referrer, event, cachedLocation } = await request.json();
 
     // Get IP from headers - try multiple sources
     let ip =
@@ -55,23 +65,42 @@ export async function POST(request: NextRequest) {
       isExisting = false;
     }
 
-    // Fetch location data from ipinfo.io
-    let ipData: IPInfoResponse | null = null;
-    const ipinfoToken = process.env.IPINFO_TOKEN;
+    // Location data - use cached if provided, otherwise fetch from ipinfo
+    let locationData: CachedLocationData | null = null;
+    let fetchedFreshLocation = false;
 
-    if (ipinfoToken && ip !== 'unknown' && ip !== '127.0.0.1' && !ip.startsWith('192.168.')) {
-      try {
-        const response = await fetch(`https://ipinfo.io/${ip}?token=${ipinfoToken}`);
-        if (response.ok) {
-          ipData = await response.json();
+    if (cachedLocation) {
+      // Use cached location from client (skip ipinfo API call)
+      locationData = cachedLocation;
+      console.log('Using cached location data');
+    } else {
+      // No cached location - fetch from ipinfo
+      const ipinfoToken = process.env.IPINFO_TOKEN;
+
+      if (ipinfoToken && ip !== 'unknown' && ip !== '127.0.0.1' && !ip.startsWith('192.168.')) {
+        try {
+          const response = await fetch(`https://ipinfo.io/${ip}?token=${ipinfoToken}`);
+          if (response.ok) {
+            const ipData: IPInfoResponse = await response.json();
+            const [latitude = '', longitude = ''] = ipData.loc?.split(',') || ['', ''];
+
+            locationData = {
+              country: ipData.country || 'Unknown',
+              region: ipData.region || 'Unknown',
+              city: ipData.city || 'Unknown',
+              timezone: ipData.timezone || 'Unknown',
+              isp: ipData.org || 'Unknown',
+              latitude,
+              longitude,
+            };
+            fetchedFreshLocation = true;
+            console.log('Fetched fresh location from ipinfo');
+          }
+        } catch (error) {
+          console.error('Error fetching IP info:', error);
         }
-      } catch (error) {
-        console.error('Error fetching IP info:', error);
       }
     }
-
-    // Parse location data
-    const [latitude = '', longitude = ''] = ipData?.loc?.split(',') || ['', ''];
 
     // Determine source from referrer
     let source = 'Direct';
@@ -89,26 +118,29 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
       visitorId,
       ip,
-      country: ipData?.country || 'Unknown',
-      region: ipData?.region || 'Unknown',
-      city: ipData?.city || 'Unknown',
-      timezone: ipData?.timezone || 'Unknown',
-      isp: ipData?.org || 'Unknown',
+      country: locationData?.country || 'Unknown',
+      region: locationData?.region || 'Unknown',
+      city: locationData?.city || 'Unknown',
+      timezone: locationData?.timezone || 'Unknown',
+      isp: locationData?.isp || 'Unknown',
       userAgent,
       referrer: referrer || 'Direct',
-      latitude,
-      longitude,
-      source: 'ipinfo.io',
+      latitude: locationData?.latitude || '',
+      longitude: locationData?.longitude || '',
+      source: cachedLocation ? 'cached' : 'ipinfo.io',
       status: isExisting ? 'Existing' : 'New',
       path: event ? `EVENT: ${event}` : (path || '/'),
     };
 
     await logVisitor(visitorData);
 
+    // Return response with fresh location data for client to cache
     return NextResponse.json({
       success: true,
       visitorId,
-      isNew: !isExisting
+      isNew: !isExisting,
+      // Only send location back if we fetched it fresh (for client to cache)
+      ...(fetchedFreshLocation && locationData ? { location: locationData } : {})
     });
   } catch (error) {
     console.error('Error logging visitor:', error);

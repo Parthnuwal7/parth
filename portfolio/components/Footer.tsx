@@ -9,6 +9,7 @@ export default function Footer({ visitorCount, socialLinks }: FooterProps) {
   const githubLink = socialLinks.find(link => link.name.toLowerCase() === 'github')?.url || '#';
   const linkedinLink = socialLinks.find(link => link.name.toLowerCase() === 'linkedin')?.url || '#';
   const emailLink = socialLinks.find(link => link.name.toLowerCase() === 'email')?.url || 'mailto:your@email.com';
+  const resumeLink = socialLinks.find(link => link.name.toLowerCase() === 'resume')?.url || '#';
 
   const trackClick = (event: string) => {
     fetch('/api/analytics', {
@@ -30,7 +31,7 @@ export default function Footer({ visitorCount, socialLinks }: FooterProps) {
             Projects
           </a>
           <a
-            href="https://drive.google.com/file/d/12p7I3-seaEFth7eBksSykvCYBtwT6Lfp/view?usp=drivesdk"
+            href={resumeLink}
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent hover:text-foreground transition-colors"

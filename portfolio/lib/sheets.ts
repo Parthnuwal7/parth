@@ -261,6 +261,34 @@ export async function getVisitorCount() {
   return rows.length - 1; // Subtract header row
 }
 
+// Get all visitor logs for analytics
+export async function getVisitorLogs() {
+  const sheets = getGoogleSheetsClient();
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `${SHEETS.VISITOR_LOGS}!A2:O`, // Skip header row
+  });
+
+  const rows = response.data.values || [];
+  return rows.map((row) => ({
+    timestamp: row[0] || '',
+    visitorId: row[1] || '',
+    ip: row[2] || '',
+    country: row[3] || '',
+    region: row[4] || '',
+    city: row[5] || '',
+    timezone: row[6] || '',
+    isp: row[7] || '',
+    userAgent: row[8] || '',
+    referrer: row[9] || '',
+    latitude: row[10] || '',
+    longitude: row[11] || '',
+    source: row[12] || '',
+    status: row[13] || '',
+    path: row[14] || '',
+  }));
+}
+
 // Add/Update project (Admin)
 export async function upsertProject(project: any) {
   const sheets = getGoogleSheetsClient();

@@ -80,7 +80,7 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
 
             <div className="flex flex-wrap gap-3 md:gap-4 pt-4">
               <a
-                href="https://drive.google.com/file/d/12p7I3-seaEFth7eBksSykvCYBtwT6Lfp/view?usp=drivesdk"
+                href={resume ? formatUrl(resume.url) : '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="glass-card px-4 py-3 font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all flex items-center gap-2"
