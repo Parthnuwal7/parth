@@ -20,7 +20,7 @@ const experiences: ExperienceItem[] = [
     ],
   },
   {
-    role: 'Business Intelligence / Data Intern',
+    role: 'Business Intelligence Intern',
     company: 'Aspire FinTech Technologies',
     location: 'Singapore (Remote)',
     period: 'Aug 2024 – Apr 2025',
