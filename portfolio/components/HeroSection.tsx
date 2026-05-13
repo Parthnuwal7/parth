@@ -12,6 +12,7 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
   const github = socialLinks.find(link => link.name.toLowerCase() === 'github');
   const linkedin = socialLinks.find(link => link.name.toLowerCase() === 'linkedin');
   const resume = socialLinks.find(link => link.name.toLowerCase() === 'resume');
+  const cal = socialLinks.find(link => link.name.toLowerCase() === 'cal');
   const { theme } = useTheme();
 
   // Get the appropriate icon based on theme
@@ -80,9 +81,7 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
 
             <div className="flex flex-wrap gap-3 md:gap-4 pt-4">
               <a
-                href={resume ? formatUrl(resume.url) : '#'}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/resume"
                 className="glass-card px-4 py-3 font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all flex items-center gap-2"
                 onClick={() => {
                   // Log resume click event (bypasses normal time limit)
@@ -100,6 +99,28 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
                 {resume && getIcon(resume) && <Image src={`/${getIcon(resume)}`} alt="Resume" width={20} height={20} />}
                 Resume
               </a>
+              {cal && (
+                <a
+                  href={formatUrl(cal.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-card px-4 py-3 font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all flex items-center gap-2"
+                  onClick={() => {
+                    fetch('/api/analytics', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        event: 'cal_click',
+                        visitorId: localStorage.getItem('portfolio_visitor_id'),
+                        referrer: document.referrer || 'Direct'
+                      }),
+                    }).catch(console.error);
+                  }}
+                >
+                  {getIcon(cal) && <Image src={`/${getIcon(cal)}`} alt="Book a call" width={20} height={20} />}
+                  Book a 15-min call
+                </a>
+              )}
               {github && (
                 <a
                   href={formatUrl(github.url)}

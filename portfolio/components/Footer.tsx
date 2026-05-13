@@ -9,7 +9,6 @@ export default function Footer({ visitorCount, socialLinks }: FooterProps) {
   const githubLink = socialLinks.find(link => link.name.toLowerCase() === 'github')?.url || '#';
   const linkedinLink = socialLinks.find(link => link.name.toLowerCase() === 'linkedin')?.url || '#';
   const emailLink = socialLinks.find(link => link.name.toLowerCase() === 'email')?.url || 'mailto:your@email.com';
-  const resumeLink = socialLinks.find(link => link.name.toLowerCase() === 'resume')?.url || '#';
 
   const trackClick = (event: string) => {
     fetch('/api/analytics', {
@@ -31,9 +30,7 @@ export default function Footer({ visitorCount, socialLinks }: FooterProps) {
             Projects
           </a>
           <a
-            href={resumeLink}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/resume"
             className="text-accent hover:text-foreground transition-colors"
             onClick={() => trackClick('resume_click')}
           >

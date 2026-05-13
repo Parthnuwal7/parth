@@ -24,7 +24,6 @@ const experiences: ExperienceItem[] = [
     company: 'Aspire FinTech Technologies',
     location: 'Singapore (Remote)',
     period: 'Aug 2024 – Apr 2025',
-    lorUrl: 'https://drive.google.com/file/d/1EnjpCSNyrH1c1jdvFljgUyChRaNxD6OL/view?usp=sharing',
     bullets: [
       'Implemented 400+ dbt tests (freshness, completeness, consistency, nullability, logic checks) across 30+ core tables, raising data quality score from 30 → 60+ and making downstream analytics demonstrably trustworthy.',
       'Performed SQL-based data model updates and schema changes, collaborating with stakeholders to align transformations with how the business actually used the data.',
@@ -47,19 +46,6 @@ export default function ExperienceSection() {
                   <h3 className="text-xl md:text-2xl font-semibold">{exp.role}</h3>
                   <p className="text-accent text-base">
                     {exp.company} <span className="opacity-70">· {exp.location}</span>
-                    {exp.lorUrl && (
-                      <>
-                        {' '}
-                        <a
-                          href={exp.lorUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="underline decoration-dotted hover:text-foreground"
-                        >
-                          (LOR)
-                        </a>
-                      </>
-                    )}
                   </p>
                 </div>
                 <span className="text-sm text-accent whitespace-nowrap">{exp.period}</span>

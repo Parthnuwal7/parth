@@ -4,12 +4,12 @@ interface SkillsSectionProps {
 
 export default function SkillsSection({ skills }: SkillsSectionProps) {
   const defaultSkills = {
-    'Backend & Systems': ['Python', 'FastAPI', 'Flask', 'REST API design', 'SQL', 'MongoDB', 'Supabase'],
-    'Data & Analytics': ['SQL Analytics', 'Tableau', 'dbt', 'Data Quality Checks'],
-    'Machine Learning & NLP': ['Applied Machine Learning', 'Supervised & Unsupervised Learning', 'Neural Networks', 'Natural Language Processing (NLP)'],
-    'LLMs & AI Integrations': ['LLM-based system integrations', 'LangChain', 'Model integrations (Gemini, open-source transformers)'],
-    'Automation & Testing': ['Playwright (web automation & data extraction)', 'n8n (workflow automation)'],
-    'Engineering Tools': ['Git', 'GitHub', 'Web scraping (BeautifulSoup)'],
+    'Data & Storage': ['SQL', 'DuckDB', 'dbt', 'MongoDB', 'Pinecone', 'Chroma', 'NetworkX'],
+    'Backend & Pipelines': ['Python', 'FastAPI', 'REST APIs', 'Async Processing', 'BullMQ', 'Redis'],
+    'ML & Data Science': ['PyTorch', 'scikit-learn', 'statsmodels', 'scipy', 'pandas', 'NumPy'],
+    'Infra & Cloud': ['GCP', 'Docker', 'Git', 'n8n'],
+    'LLM & AI Systems': ['LLaMA 3', 'Gemini', 'RAG', 'Multi-Agent Systems', 'ReAct', 'LLM Evals', 'Langfuse'],
+    'AI Frameworks': ['LangChain', 'Pydantic', 'Hugging Face', 'Google ADK'],
   };
 
   const displaySkills = Object.keys(skills).length > 0 ? skills : defaultSkills;

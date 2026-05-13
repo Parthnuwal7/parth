@@ -3,7 +3,7 @@ import { saveMessage } from '@/lib/sheets';
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, message } = await request.json();
+    const { name, email, message, type } = await request.json();
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -12,7 +12,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await saveMessage(name, email, message);
+    const tagged = type === 'resume_request' ? `[RESUME REQUEST] ${message}` : message;
+    await saveMessage(name, email, tagged);
 
     return NextResponse.json({ success: true });
   } catch (error) {
