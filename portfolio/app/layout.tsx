@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Parth Nuwal | AI Engineer",
   description: "AI engineer building LLM-powered products with production-grade backends. Creator of X-101 (deterministic NL-to-SQL analytics, 400+ test suite). Currently at AtTheRate.ai (Singapore).",
-  keywords: ["Parth Nuwal", "AI Engineer", "LLM Engineer", "Founding Engineer", "Python", "FastAPI", "DuckDB", "RAG", "LLM Systems", "India"],
+  keywords: ["Parth Nuwal", "AI Engineer", "LLM Engineer", "Founding Engineer", "Python", "FastAPI", "DuckDB", "RAG", "AI Systems", "India"],
   authors: [{ name: "Parth Nuwal" }],
   creator: "Parth Nuwal",
   metadataBase: new URL("https://parth-nuwal-dev.vercel.app"),
