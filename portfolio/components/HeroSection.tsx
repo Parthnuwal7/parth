@@ -59,7 +59,7 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
                 {siteCopy.role || 'Machine Learning Engineer'}
               </p> */}
               <p className="text-base md:text-lg text-accent mb-2">
-                {siteCopy.subtitle || 'Backend • Data • ML Systems'}
+                {siteCopy.subtitle || 'AI Engineer · Agentic Systems · Data and ML'}
               </p>
               <p className="text-md md:text-md text-accent flex items-center gap-1 mb-4 md:mb-6">
                 <span>📍</span>
@@ -70,11 +70,11 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
             <div className="space-y-3 md:space-y-4 text-md md:text-base leading-8 text-justify">
               <p>
                 {siteCopy.intro ||
-                  'Final-year CS undergraduate with a strong backend and data-driven mindset. I enjoy working on the backend side of systems - building APIs, integrating ML workflows and designing reliable services from scratch to MVP.'}
+                  "Hi, I'm Parth — a recent CS graduate who likes building systems from scratch, owning them end-to-end, and taking them past the MVP stage."}
               </p>
               <p>
                 {siteCopy.experience ||
-                  'My work has primarily involved Python, FastAPI backends, ML pipelines and Natural language processing (NLP). I focus on clarity and building things that work beyond demos.'}
+                  'My focus is AI engineering, especially multi-agent systems. The backend stack I lean on is Python, FastAPI, and the broader LLM tooling around them. There’s more about what I’ve built below.'}
               </p>
             </div>
 
