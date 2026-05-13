@@ -59,7 +59,7 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
                 {siteCopy.role || 'Machine Learning Engineer'}
               </p> */}
               <p className="text-base md:text-lg text-accent mb-2">
-                {siteCopy.subtitle || 'Backend • Data • ML Systems'}
+                {siteCopy.subtitle || 'AI Engineer · LLM Systems · Production Backends'}
               </p>
               <p className="text-md md:text-md text-accent flex items-center gap-1 mb-4 md:mb-6">
                 <span>📍</span>
@@ -70,11 +70,11 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
             <div className="space-y-3 md:space-y-4 text-md md:text-base leading-8 text-justify">
               <p>
                 {siteCopy.intro ||
-                  'Final-year CS undergraduate with a strong backend and data-driven mindset. I enjoy working on the backend side of systems - building APIs, integrating ML workflows and designing reliable services from scratch to MVP.'}
+                  'I build LLM-powered products where the model plans and code does the work. Currently shipping campaign automation infra at AtTheRate.ai (Singapore). Previously: X-101 — a natural-language analytics platform validated by a 400+ case deterministic test suite.'}
               </p>
               <p>
                 {siteCopy.experience ||
-                  'My work has primarily involved Python, FastAPI backends, ML pipelines and Natural language processing (NLP). I focus on clarity and building things that work beyond demos.'}
+                  'My focus is AI systems that work in production — not demos. Python, FastAPI, DuckDB, LLM orchestration, and the schema, testing, and observability that keep them honest.'}
               </p>
             </div>
 

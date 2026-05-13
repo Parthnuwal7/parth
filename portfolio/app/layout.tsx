@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Parth Nuwal | Backend & ML Engineer",
-  description: "Final-year CS undergraduate specializing in backend development, ML pipelines, and data-driven systems. Building APIs, FastAPI backends, and NLP solutions.",
-  keywords: ["Parth Nuwal", "Backend Developer", "Machine Learning Engineer", "Python", "FastAPI", "NLP", "Full Stack Developer", "AI Engineer", "Founding Engineer", "Automation", "India"],
+  title: "Parth Nuwal | AI Engineer",
+  description: "AI engineer building LLM-powered products with production-grade backends. Creator of X-101 (deterministic NL-to-SQL analytics, 400+ test suite). Currently at AtTheRate.ai (Singapore).",
+  keywords: ["Parth Nuwal", "AI Engineer", "LLM Engineer", "Founding Engineer", "Python", "FastAPI", "DuckDB", "RAG", "LLM Systems", "India"],
   authors: [{ name: "Parth Nuwal" }],
   creator: "Parth Nuwal",
   metadataBase: new URL("https://parth-nuwal-dev.vercel.app"),
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://parth-nuwal-dev.vercel.app",
     siteName: "Parth Nuwal Portfolio",
-    title: "Parth Nuwal | Backend & ML Engineer",
-    description: "Final-year CS undergraduate specializing in backend development, ML pipelines, and data-driven systems.",
+    title: "Parth Nuwal | AI Engineer",
+    description: "AI engineer building LLM-powered products with production-grade backends. Creator of X-101 (deterministic NL-to-SQL analytics).",
     images: [
       {
         url: "/hero.jpg",
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Parth Nuwal | Backend & ML Engineer",
-    description: "Final-year CS undergraduate specializing in backend development, ML pipelines, and data-driven systems.",
+    title: "Parth Nuwal | AI Engineer",
+    description: "AI engineer building LLM-powered products with production-grade backends.",
     images: ["/hero.jpg"],
   },
   robots: {
@@ -67,13 +67,13 @@ const jsonLd = {
   name: "Parth Nuwal",
   url: "https://parth-nuwal-dev.vercel.app",
   image: "https://parth-nuwal-dev.vercel.app/hero.jpg",
-  jobTitle: ["Backend Engineer", "Applied ML Engineer", "AI Engineer", "Founding Engineer", "Automation Engineer", "Data Engineer"],
-  description: "Computer Science and Data Science undergraduate specializing in backend development, ML pipelines, and data-driven systems.",
+  jobTitle: "AI Engineer",
+  description: "AI engineer building LLM-powered products with production-grade backends. Creator of X-101 — a deterministic NL-to-SQL analytics platform.",
   alumniOf: {
     "@type": "Organization",
     name: "Swami Keshavanand Institute of Technology"
   },
-  knowsAbout: ["Python", "FastAPI", "Machine Learning", "NLP", "Backend Development", "Data Engineering", "AI Engineer", "Founding Engineer", "Automation", "India"],
+  knowsAbout: ["LLM Systems", "RAG", "Prompt Engineering", "FastAPI", "DuckDB", "Python", "NLP", "Backend Engineering", "Founding Engineer"],
   sameAs: [
     "https://github.com/Parthnuwal7",
     "https://www.linkedin.com/in/parth-nuwal-9a81b9226",
