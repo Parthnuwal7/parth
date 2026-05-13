@@ -70,11 +70,11 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
             <div className="space-y-3 md:space-y-4 text-md md:text-base leading-8 text-justify">
               <p>
                 {siteCopy.intro ||
-                  'Currently at AtTheRate.ai (Singapore, remote), working on campaign automation backends. Before that I built X-101, an analytics tool where you ask data questions in English. The LLM plans the query; a Python + DuckDB layer runs the actual SQL. 400+ tests, because LLM-generated SQL was being wrong too often to trust.'}
+                  "Hi, I'm Parth — a recent CS graduate who likes building systems from scratch, owning them end-to-end, and taking them past the MVP stage."}
               </p>
               <p>
                 {siteCopy.experience ||
-                  'Day-to-day work is Python, FastAPI, DuckDB, and whatever LLM stack the project calls for. I lean toward systems where the model does the language and code does the data — usually more reliable than letting the model do both.'}
+                  'My focus is AI engineering, especially multi-agent systems. The backend stack I lean on is Python, FastAPI, and the broader LLM tooling around them. There’s more about what I’ve built below.'}
               </p>
             </div>
 
