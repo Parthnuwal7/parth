@@ -70,11 +70,11 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
             <div className="space-y-3 md:space-y-4 text-md md:text-base leading-8 text-justify">
               <p>
                 {siteCopy.intro ||
-                  'I build LLM-powered products where the model plans and code does the work. Currently shipping campaign automation infra at AtTheRate.ai (Singapore). Previously: X-101 — a natural-language analytics platform validated by a 400+ case deterministic test suite.'}
+                  'Currently at AtTheRate.ai (Singapore, remote), working on campaign automation backends. Before that I built X-101, an analytics tool where you ask data questions in English. The LLM plans the query; a Python + DuckDB layer runs the actual SQL. 400+ tests, because LLM-generated SQL was being wrong too often to trust.'}
               </p>
               <p>
                 {siteCopy.experience ||
-                  'My focus is AI systems that work in production — not demos. Python, FastAPI, DuckDB, LLM orchestration, and the schema, testing, and observability that keep them honest.'}
+                  'Day-to-day work is Python, FastAPI, DuckDB, and whatever LLM stack the project calls for. I lean toward systems where the model does the language and code does the data — usually more reliable than letting the model do both.'}
               </p>
             </div>
 
