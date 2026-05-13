@@ -1,6 +1,7 @@
 import Navigation from '@/components/Navigation';
 import ThemeToggle from '@/components/ThemeToggle';
 import HeroSection from '@/components/HeroSection';
+import ExperienceSection from '@/components/ExperienceSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import AboutMeSection from '@/components/AboutMeSection';
 import MessageSection from '@/components/MessageSection';
@@ -27,6 +28,7 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto glass-card p-4 md:p-8 lg:p-12">
           <main>
             <HeroSection siteCopy={siteCopy} socialLinks={socialLinks} />
+            <ExperienceSection />
             <ProjectsSection projects={projects} />
             <AboutMeSection skills={skills} />
             <MessageSection />
