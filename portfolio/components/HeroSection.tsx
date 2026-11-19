@@ -60,7 +60,7 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
                 {siteCopy.role || 'Machine Learning Engineer'}
               </p> */}
               <p className="text-base md:text-lg text-accent mb-2">
-                {siteCopy.subtitle || 'Software Engineer · Applied AI · Bakend & Data'}
+                {siteCopy.subtitle || 'Software Engineer · Applied AI · Backend & Data'}
               </p>
               <p className="text-md md:text-md text-accent flex items-center gap-1 mb-4 md:mb-6">
                 <span>📍</span>
