@@ -11,7 +11,6 @@ interface HeroSectionProps {
 export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps) {
   const github = socialLinks.find(link => link.name.toLowerCase() === 'github');
   const linkedin = socialLinks.find(link => link.name.toLowerCase() === 'linkedin');
-  const resume = socialLinks.find(link => link.name.toLowerCase() === 'resume');
   const cal = socialLinks.find(link => link.name.toLowerCase() === 'cal');
   const { theme } = useTheme();
 
@@ -38,12 +37,13 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
         <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-center">
           {/* Left - Photo */}
           <div className="flex justify-center order-1 md:order-none">
-            <div className="glass-card p-0 w-64 h-64 md:w-100 md:h-100 flex items-center justify-center overflow-hidden">
+            <div className="glass-card p-0 w-64 md:w-80 lg:w-96 aspect-square overflow-hidden">
               <Image
-                src="/hero.jpg"
+                src="/profile.jpg"
                 alt={siteCopy.name || 'Profile Photo'}
-                width={400}
-                height={400}
+                width={900}
+                height={900}
+                sizes="(min-width: 1024px) 384px, (min-width: 768px) 320px, 256px"
                 className="w-full h-full object-cover rounded-lg"
                 priority
               />
@@ -60,45 +60,34 @@ export default function HeroSection({ siteCopy, socialLinks }: HeroSectionProps)
                 {siteCopy.role || 'Machine Learning Engineer'}
               </p> */}
               <p className="text-base md:text-lg text-accent mb-2">
-                {siteCopy.subtitle || 'AI Engineer · Agentic Systems · Data and ML'}
+                {siteCopy.subtitle || 'Software Engineer · Applied AI · Bakend & Data'}
               </p>
               <p className="text-md md:text-md text-accent flex items-center gap-1 mb-4 md:mb-6">
                 <span>📍</span>
                 {siteCopy.location || 'India'}
               </p>
+              {/* <p className="inline-flex items-center gap-2 text-sm font-medium px-3 py-1.5 rounded-full border border-accent/30 bg-accent/10">
+                <span className="w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
+                {siteCopy.availability || 'Open to founding & early-stage AI engineer roles'}
+              </p> */}
             </div>
 
-            <div className="space-y-3 md:space-y-4 text-md md:text-base leading-8 text-justify">
-              <p>
+            <div className="space-y-3 md:space-y-4 text-md md:text-base leading-8">
+              <p className="font-medium">
                 {siteCopy.intro ||
-                  "Hi, I'm Parth — a recent CS graduate who likes building systems from scratch, owning them end-to-end, and taking them past the MVP stage."}
+                  'Software engineer drawn to problems where AI, backend systems, and data intersect.'}
               </p>
               <p>
                 {siteCopy.experience ||
-                  'My focus is AI engineering, especially multi-agent systems. The backend stack I lean on is Python, FastAPI, and the broader LLM tooling around them. There’s more about what I’ve built below.'}
+                  'I like creating systems from the bottom up, deconstructing ambiguous requirements, analysing trade-offs, building dependable services, and identifying what happens when things go wrong. My areas of interest are backend architecture, data infrastructure, and applied AI, particularly around agentic systems and model evaluation.'}
+              </p>
+              <p>
+                {siteCopy.philosophy ||
+                  'I care about the engineering around AI as much as the models themselves: ensuring correctness, observability, latency, cost, and knowing whether a system actually works beyond a successful demo.'}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3 md:gap-4 pt-4">
-              <a
-                href="/resume"
-                className="glass-card px-4 py-3 font-medium border-2 border-accent/30 hover:border-accent/60 hover:!bg-accent/40 dark:hover:!bg-foreground/30 transition-all flex items-center gap-2"
-                onClick={() => {
-                  // Log resume click event (bypasses normal time limit)
-                  fetch('/api/analytics', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      event: 'resume_click',
-                      visitorId: localStorage.getItem('portfolio_visitor_id'),
-                      referrer: document.referrer || 'Direct'
-                    }),
-                  }).catch(console.error);
-                }}
-              >
-                {resume && getIcon(resume) && <Image src={`/${getIcon(resume)}`} alt="Resume" width={20} height={20} />}
-                Resume
-              </a>
               {cal && (
                 <a
                   href={formatUrl(cal.url)}

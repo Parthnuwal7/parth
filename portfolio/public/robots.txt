@@ -1,5 +1,10 @@
+# All crawlers, including AI crawlers (GPTBot, ClaudeBot, PerplexityBot,
+# Google-Extended, etc.), are welcome to index the public site.
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/
 
-# Sitemap
+# A plain-text summary for language models: https://parth-nuwal-dev.vercel.app/llms.txt
+
 Sitemap: https://parth-nuwal-dev.vercel.app/sitemap.xml

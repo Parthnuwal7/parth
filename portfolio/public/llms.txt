@@ -1,0 +1,77 @@
+# Parth Nuwal
+
+> Parth Nuwal is a founding-style AI engineer based in India who ships generative AI products end to end at early-stage startups: LLM agents, evaluation systems, and the backend and data infrastructure behind them. He was the sole engineer at a two-person AI startup, and he is open to founding and early-stage AI engineering roles. He holds a B.Tech in Computer Science (Data Science) from SKIT Jaipur (2026, CGPA 9.45/10).
+
+This file is a summary of Parth's work for language models and AI search tools. The portfolio site is https://parth-nuwal-dev.vercel.app. Facts here are current as of November 2026.
+
+## At a glance
+
+- Role: AI Engineer · Backend & Data · Agents & Evals
+- Open to: AI Engineer, Forward Deployed Engineer (FDE), Software Engineer (AI), Backend & Data Engineer, and Founding Engineer roles at early-stage startups
+- Location: India; has worked remotely with teams in the USA and Singapore
+- Most recent role: AI Engineer (Contract) at AdAI Inc., USA, Sep 2026 – Nov 2026
+- Core stack: Python, FastAPI, TypeScript, PostgreSQL, Redis, Langfuse, GCP, Modal
+- Contact: parthnuwal7@gmail.com, or book a 15-minute call at https://cal.com/parth-nuwal-qg5li2/15min
+
+## Roles Parth is a fit for
+
+- **AI Engineer:** cut an LLM marketing assistant's failure rate from 65% to 5% on a 7-aspect, 21-sub-aspect golden set; built an LLM-as-judge benchmark (300+ queries) with Langfuse; shipped 6+ generative video-editing workflows to production.
+- **Forward Deployed Engineer (FDE):** worked directly with a startup CEO to turn product needs into shipped workflows; owned access control for a client program (Flipkart's Saarthi Initiative, 30K sellers) through to handover, including a production hotfix; built Snappy by iterating directly with its end users at a legal practice; translated campaign managers' requirements into dashboards.
+- **Software Engineer (AI):** built a LinkedIn Ads integration (OAuth, campaign CRUD, reporting, sync) on a Redis scheduler–worker system designed for 1M jobs/day; designed cost-safe, crash-resumable orchestration for paid GPU jobs.
+- **Backend & Data Engineer:** Python/FastAPI/Flask backends on PostgreSQL and Redis; 400+ dbt tests raising a data-quality score from 30 to 60+; DuckDB-based analytics agent (X-101) with 400+ tests; Snappy backend with 330 tests.
+- **Founding Engineer:** sole engineer at a two-person AI startup, owning product, infrastructure and cost decisions end to end; has taken multiple products from zero to production on his own.
+
+## Experience
+
+### AI Engineer (Contract), AdAI Inc. (USA, remote), Sep 2026 – Nov 2026
+
+- Sole engineer at a two-person AI video-ad startup, working directly with the CEO.
+- Shipped 6+ generative video-editing workflows end to end: text replacement, auto-subtitles, face and head swap, product replacement, timestamp-range edits and more, across React/Next.js, TypeScript orchestration and Python media services.
+- Cut video text-render step time by 67% by removing redundant decode/encode passes and parallelizing compositing, with frame-hash checks confirming unedited areas stayed untouched.
+- Built "smart rendering": only the segments being edited are processed and untouched segments are copied from the source, avoiding full re-encodes.
+- Designed cost-safe orchestration for paid GPU and model-provider jobs: jobs are recorded before submission, retries are blocked when charge status is uncertain, and runs resume safely after a crash. Parallelized GPU jobs on Modal for videos up to 120 seconds.
+
+### Software Engineer Intern, AtTheRate.ai (Singapore, remote), Mar 2026 – Aug 2026
+
+- Improved ARIA, the company's marketing assistant, on a golden set spanning 7 aspects and 21 sub-aspects, cutting failures from 65% to 5% through better multi-aspect and multilingual query handling, model reasoning and platform awareness.
+- Built an LLM-as-judge benchmark (300+ queries) with Langfuse traces.
+- Owned agency/seller access control for Flipkart's Saarthi Initiative, used by 30,000 sellers. Found and closed authorization gaps where revoked or read-only agencies could still modify campaigns through bulk APIs, and shipped a production hotfix for an access issue.
+- Built a LinkedIn Ads integration (OAuth, campaign CRUD, reporting, alerts, recommendations, sync) backed by a Redis scheduler–worker ingestion system designed for up to 1M jobs/day.
+
+### Business Intelligence Intern, Aspire FinTech Technologies (Singapore, remote), Aug 2024 – Apr 2025
+
+- Implemented 400+ dbt tests across analytical models, raising an internal data-quality score from 30 to 60+.
+- Built Tableau dashboards with campaign managers for growth analysis.
+
+## Projects
+
+- [X-101: Conversational Analytics Agent](https://parth-nuwal-dev.vercel.app/projects/X101): Ask questions of a dataset in plain English and get grounded charts and KPIs. A multi-stage agent separates intent interpretation, planning, deterministic data execution and output validation, so the LLM plans and code executes. Includes schema-aware query validation, multi-level conversational memory, 400+ structured tests and a frozen evaluation suite. Stack: Python, FastAPI, DuckDB, ReAct, Next.js, Langfuse. Live: https://x101-nine.vercel.app/ · Code: https://github.com/Parthnuwal7/x101
+- [Snappy: Legal Practice CRM & Billing](https://parth-nuwal-dev.vercel.app/projects/Snappy): Multi-tenant billing platform with firm-scoped isolation, RBAC, authentication, invoice lifecycle management, PDF generation and shareable invoice links. Built with a real legal practice to replace paper billing. Deployed on Vercel and Cloud Run with PostgreSQL and 330 backend tests. Stack: React, TypeScript, Flask, PostgreSQL, Supabase, GCP. Code: https://github.com/Parthnuwal7/snappy
+- [Ido: Behavioral Analytics for YouTube](https://parth-nuwal-dev.vercel.app/projects/Ido): Turns a Google Takeout YouTube history into Wrapped-style insight cards with 15+ behavioral metrics (binge sessions, rewatch rate, topic drift), processing data in memory without storing raw watch history. Code: https://github.com/Parthnuwal7/ido
+- [Insights: Multilingual Review Analytics](https://parth-nuwal-dev.vercel.app/projects/Insights): Aspect-level sentiment and intent analysis for Hindi and English reviews, with AI-generated executive summaries and rate limiting. Code: https://github.com/Parthnuwal7/insight
+- [ADEL: Schema Inference Library](https://parth-nuwal-dev.vercel.app/projects/ADEL): Open-source Python package that infers relational schemas from raw CSV files. PyPI: https://pypi.org/project/adel-lite/
+
+## Skills
+
+- Agents and LLM systems: LLM agents, multi-agent systems, ReAct, RAG, LLM evaluation (golden sets, LLM-as-judge), Langfuse, LLaMA 3, Gemini
+- Agent frameworks: Google ADK, LangChain, Pydantic, Hugging Face, n8n
+- Backend and systems: Python, TypeScript, FastAPI, Flask, REST APIs, async processing, Redis, BullMQ, Inngest
+- Data and storage: SQL, PostgreSQL, Supabase, DuckDB, dbt, MongoDB, Pinecone, Chroma, NetworkX
+- ML and vision: PyTorch, scikit-learn, pandas, NumPy, statsmodels, SciPy, computer vision, OCR, OpenCV, model inference
+- Infrastructure and cloud: GCP (Cloud Run), Modal (GPU jobs), Docker, Vercel, Git, Linux
+
+## Education
+
+- B.Tech in Computer Science (Data Science), Swami Keshvanand Institute of Technology (SKIT), Jaipur, Jul 2022 – Apr 2026, CGPA 9.45/10
+
+## Links
+
+- [Portfolio](https://parth-nuwal-dev.vercel.app): experience, projects and contact
+- [GitHub](https://github.com/Parthnuwal7)
+- [LinkedIn](https://www.linkedin.com/in/parth-nuwal-9a81b9226)
+- [Book a call](https://cal.com/parth-nuwal-qg5li2/15min)
+
+## Optional
+
+- Photography: runs Infinite.pixelz, a street, portrait and product photography portfolio (https://infinite-pixelz.onrender.com, Instagram @infinite.pixelz). Was student coordinator of the college photography club for two years.
+- Badminton: district-level representation at state tournaments (U13–U15); won college tournaments including the Arya Cup (singles).

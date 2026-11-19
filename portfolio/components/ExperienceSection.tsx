@@ -9,14 +9,26 @@ interface ExperienceItem {
 
 const experiences: ExperienceItem[] = [
   {
+    role: 'AI Engineer (Contract)',
+    company: 'AdAI Inc.',
+    location: 'USA (Remote)',
+    period: 'Sep 2026 – Nov 2026',
+    bullets: [
+      'Sole engineer at a two-person AI video-ad startup, working directly with the CEO. Shipped 6+ generative video-editing workflows end to end (text replacement, auto-subtitles, face and head swap, product replacement, timestamp-range edits and more) across React/Next.js, TypeScript orchestration and Python media services.',
+      'Cut video text-render step time by 67% by removing redundant decode/encode passes and parallelizing compositing, with frame-hash checks to confirm unedited areas stayed untouched.',
+      'Built "smart rendering": only the segments being edited are processed, and untouched segments are copied straight from the source. This avoids full re-encodes, so longer videos render faster and cheaper.',
+      'Designed cost-safe orchestration for paid GPU and model-provider jobs: every job is recorded before submission, retries are blocked when charge status is uncertain, and runs resume safely after a crash. Parallelized GPU jobs on Modal for videos up to 120s.',
+    ],
+  },
+  {
     role: 'Software Engineer Intern',
     company: 'AtTheRate.ai',
     location: 'Singapore (Remote)',
-    period: 'Mar 2026 – Present',
+    period: 'Mar 2026 – Aug 2026',
     bullets: [
-      'Parallelized large-scale campaign reporting pipelines over BullMQ-based async processing, reducing query latency by 30% on high-volume datasets.',
-      'Built backend logic for campaign recommendation systems, including bid and budget adjustments at the placement level (Flipkart platform integration).',
-      'Contributed to system design for Flipkart onboarding (50K+ platform users), including white-labelling architecture and access control across agency vs client permissions.',
+      'Improved ARIA, the company’s marketing assistant, on a golden set spanning 7 aspects and 21 sub-aspects, cutting failures from 65% to 5% through better multi-aspect and multilingual query handling, model reasoning and platform awareness. Built an LLM-as-judge benchmark (300+ queries) with Langfuse traces.',
+      'Owned agency/seller access control for Flipkart’s Saarthi Initiative, used by 30K sellers: connected-account permissions, access gating and revocation. Found and closed authorization gaps where revoked or read-only agencies could still modify campaigns through bulk APIs before the Flipkart handover, and shipped a production hotfix for an access issue.',
+      'Built a LinkedIn Ads integration (OAuth connect, account picker, campaign CRUD, reporting, alerts, recommendations and sync), backed by a Redis scheduler–worker ingestion system designed for up to 1M jobs/day.',
     ],
   },
   {
@@ -25,9 +37,8 @@ const experiences: ExperienceItem[] = [
     location: 'Singapore (Remote)',
     period: 'Aug 2024 – Apr 2025',
     bullets: [
-      'Implemented 400+ dbt tests (freshness, completeness, consistency, nullability, logic checks) across 30+ core tables, raising data quality score from 30 → 60+ and making downstream analytics demonstrably trustworthy.',
-      'Performed SQL-based data model updates and schema changes, collaborating with stakeholders to align transformations with how the business actually used the data.',
-      'Developed Tableau dashboards on top of the cleaned data layer for campaign performance tracking and business reporting used by growth teams.',
+      'Implemented 400+ dbt tests across analytical models, raising an internal data-quality score from 30 to 60+; maintained SQL models and reporting schemas.',
+      'Worked with campaign managers to turn growth-analysis requirements into Tableau dashboards, iterating on stakeholder feedback.',
     ],
   },
 ];

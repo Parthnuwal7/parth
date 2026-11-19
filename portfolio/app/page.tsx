@@ -3,6 +3,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 import HeroSection from '@/components/HeroSection';
 import ExperienceSection from '@/components/ExperienceSection';
 import ProjectsSection from '@/components/ProjectsSection';
+import EducationSection from '@/components/EducationSection';
 import AboutMeSection from '@/components/AboutMeSection';
 import MessageSection from '@/components/MessageSection';
 import Footer from '@/components/Footer';
@@ -30,6 +31,7 @@ export default async function Home() {
             <HeroSection siteCopy={siteCopy} socialLinks={socialLinks} />
             <ExperienceSection />
             <ProjectsSection projects={projects} />
+            <EducationSection />
             <AboutMeSection skills={skills} />
             <MessageSection />
           </main>

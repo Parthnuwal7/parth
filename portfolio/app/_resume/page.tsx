@@ -192,7 +192,7 @@ deployment.
               <dt className="font-semibold">Infra &amp; Cloud</dt>
               <dd>GCP, Docker, Git, n8n</dd>
               <dt className="font-semibold">LLM &amp; AI Systems</dt>
-              <dd>LLaMA 3, Gemini, RAG, Multi-Agent Systems, ReAct, LLM Evals, Langfuse</dd>
+              <dd>RAG, Multi-Agent Systems, ReAct, LLM Evals, Langfuse</dd>
               <dt className="font-semibold">AI Frameworks</dt>
               <dd>LangChain, Pydantic, Hugging Face, Google ADK</dd>
             </dl>

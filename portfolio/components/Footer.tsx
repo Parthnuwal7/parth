@@ -30,13 +30,6 @@ export default function Footer({ visitorCount, socialLinks }: FooterProps) {
             Projects
           </a>
           <a
-            href="/resume"
-            className="text-accent hover:text-foreground transition-colors"
-            onClick={() => trackClick('resume_click')}
-          >
-            Resume
-          </a>
-          <a
             href={githubLink}
             target="_blank"
             rel="noopener noreferrer"
