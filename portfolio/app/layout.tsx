@@ -4,6 +4,7 @@ import "./globals.css";
 import VisitorTracker from "@/components/VisitorTracker";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CalFloatingButton from "@/components/CalFloatingButton";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -113,6 +114,7 @@ export default function RootLayout({
           {children}
           <CalFloatingButton />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
